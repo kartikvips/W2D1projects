@@ -1,6 +1,7 @@
 require "io/console"
 require_relative 'board.rb'
 require_relative 'display.rb'
+require 'byebug'
 
 KEYMAP = {
   " " => :space,
@@ -34,11 +35,13 @@ MOVES = {
 
 class Cursor
 
-  attr_reader :cursor_pos, :board
+  attr_reader :cursor_pos, :board, :selected
 
   def initialize(cursor_pos, board)
     @cursor_pos = cursor_pos
     @board = board
+    @selected = nil
+    @old_pos = cursor_pos
   end
 
   def get_input
@@ -80,7 +83,24 @@ class Cursor
   def handle_key(key)
     case key
     when :return, :space
-      cursor_pos
+    
+      if @selected == nil
+        @selected = @board[cursor_pos] unless @board[cursor_pos].class == NullPiece
+        @old_pos = cursor_pos
+        puts @selected
+      elsif @selected.class != NullPiece
+        puts @selected.moves
+        @board.move_piece(@old_pos, cursor_pos) if @selected.moves.include?(cursor_pos)
+        @selected = nil
+      end
+
+      # unless selected && @board[cursor_pos].class == NullPiece
+      #   @selected = @board[cursor_pos]
+      #   puts @selected
+      # else
+      #   @selected = nil
+      # end
+      @selected
     when :left, :right, :up, :down
       update_pos(MOVES[key])
     when :ctrl_c
@@ -91,5 +111,6 @@ class Cursor
   def update_pos(diff)
     new_pos = [@cursor_pos[0] + diff[0], @cursor_pos[1] + diff[1]]
     @cursor_pos = new_pos if @board.valid_pos?(new_pos)
+    @board[@cursor_pos]
   end
 end

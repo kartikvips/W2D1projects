@@ -1,28 +1,63 @@
+
 module SlidingPiece
 
   def moves
-    case move_dir
-    when :horizontal
-      horizontal_dirs
-    when :diagonal
-      diagonal_dirs
-    when :all
-      horizontal_dirs + diagonal_dirs
+    direction = self.class
+    p direction
+    mov = []
+    if direction == Rook
+      mov += horizontal_dirs
+    elsif direction == Bishop
+      mov += diagonal_dirs
+    elsif direction == Queen
+      mov = mov +horizontal_dirs + diagonal_dirs
     end
+    mov
   end
 
 
 
   def horizontal_dirs
+    horiz =[]
+    horiz += poss_moves_in_dir([1,0])
+    horiz += poss_moves_in_dir([0,1])
+    horiz += poss_moves_in_dir([-1,0])
+    horiz += poss_moves_in_dir([0,-1])
 
   end
 
   def diagonal_dirs
     #return all valid diagonal pos's
+    diag =[]
+    diag += poss_moves_in_dir([1,1])
+    diag += poss_moves_in_dir([-1,1])
+    diag += poss_moves_in_dir([-1,-1])
+    diag += poss_moves_in_dir([1,-1])
   end
 
 
+  def poss_moves_in_dir(dir)
 
+    poss_moves = []
+    new_pos = next_loc(@position, dir)
+    while valid_move?(new_pos)
+      poss_moves << new_pos
+      new_pos = next_loc(new_pos, dir)
+    end
+    poss_moves
+  end
+
+  def next_loc(loc, diff)
+    [loc[0] + diff[0], loc[1] + diff[1]]
+  end
+
+  def valid_move?(pos)
+    at_pos = @board[pos]
+    @board.valid_pos?(pos) && at_pos.class == NullPiece
+
+  end
+
+  private
   def move_dir
 
   end

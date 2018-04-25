@@ -27,11 +27,11 @@ class Board
           #
           #   end
           # end
-          if [0,7].include?(idx)
-            @board[idx][idx2] = Piece.new([idx, idx2], self)
-          else
-            @board[idx][idx2] = NullPiece.instance
-          end
+            @board[idx][idx2] = Pawn.new([idx,idx2], self, [1,0]) if idx == 1
+
+            @board[idx][idx2] = Pawn.new([idx,idx2], self, [-1,0]) if idx == 6
+            @board[idx][idx2] = NullPiece.instance if (2..5).include?(idx)
+
         end
       end
       @board[0][0] = Rook.new([0,0], self)

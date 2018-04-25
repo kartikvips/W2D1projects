@@ -49,9 +49,13 @@ module SteppingPiece
   end
 
   def valid_move?(pos)
-    at_pos = @board[pos]
-    @board.valid_pos?(pos) && at_pos.class == NullPiece
-
+    # at_pos = @board[pos]
+    # @board.valid_pos?(pos) && at_pos.class == NullPiece
+    if @board.valid_pos?(pos)
+      at_pos = @board[pos]
+      return true if at_pos.class == NullPiece
+    end
+    false
   end
 
   private

@@ -20,7 +20,7 @@ while true
 
 end
 
-# rk = Rook.new([0,0], brd)
-# p rk.horizontal_dirs
-# p rk.poss_moves_in_dir([1,0])
+# rk = Pawn.new([0,0], brd, [1,0])
+# # p rk.horizontal_dirs
+# # p rk.poss_moves_in_dir([-1,0])
 # p rk.moves

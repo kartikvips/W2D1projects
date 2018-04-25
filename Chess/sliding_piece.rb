@@ -1,4 +1,4 @@
-
+require 'byebug'
 module SlidingPiece
 
   def moves
@@ -52,9 +52,12 @@ module SlidingPiece
   end
 
   def valid_move?(pos)
-    at_pos = @board[pos]
-    @board.valid_pos?(pos) && at_pos.class == NullPiece
-
+    # debugger'
+    if @board.valid_pos?(pos)
+      at_pos = @board[pos]
+      return at_pos.class == NullPiece
+    end
+    false
   end
 
   private

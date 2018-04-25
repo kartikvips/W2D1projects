@@ -2,6 +2,7 @@ require_relative "sliding_piece.rb"
 require_relative "stepping_piece.rb"
 require_relative "board.rb"
 require 'singleton'
+require 'byebug'
 
 class Piece
   attr_reader :position
@@ -11,7 +12,7 @@ class Piece
   end
 
   def to_s
-    :P
+
   end
 
   def update_pos(pos)
@@ -23,7 +24,7 @@ end
 class NullPiece < Piece
   include Singleton
   def initialize
-    
+
   end
 
   def to_s
@@ -105,5 +106,43 @@ class Knight < Piece
   def to_s
     :N
   end
+
+end
+
+class Pawn < Piece
+  attr_reader :dir
+  def initialize(position, board, dir)
+    super(position, board)
+    @dir = dir
+  end
+
+  def to_s
+    :P
+  end
+
+  def moves
+
+    mov = []
+    next_pos = next_loc(@position, dir)
+    mov << next_pos if valid_move?(next_pos)
+    mov
+  end
+
+  def next_loc(loc, diff)
+
+    [loc[0] + diff[0], loc[1] + diff[1]]
+  end
+
+  def valid_move?(pos)
+
+    # at_pos = @board[pos]
+    # @board.valid_pos?(pos) && at_pos.class == NullPiece
+    if @board.valid_pos?(pos)
+      at_pos = @board[pos]
+      return true if at_pos.class == NullPiece
+    end
+    false
+  end
+
 
 end
